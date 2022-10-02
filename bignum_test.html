@@ -1,0 +1,345 @@
+<html>
+<head>
+<title>SSS 0.85b BigNum test</title>
+
+<script TYPE="text/javascript" SRC="jt_std.js"  CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_arc4.js"  CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_sha1.js"  CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_crc.js"  CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_sss.js"  CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_bignum.js"  CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_rsa_bogus.js"  CHARSET="ISO-8859-1"></script>
+
+<script language="JavaScript">
+
+var bn = new Bignum("",1);
+var bna = new Bignum("",1);
+var bnb = new Bignum("",1);
+var bnc = new Bignum("",1);
+
+function setAll(f) {
+
+   bn.hexSet(f.bn.value, f.bns.value);
+   bna.hexSet(f.bna.value, f.bnas.value);
+   bnb.hexSet(f.bnb.value, f.bnbs.value);
+   bnc.hexSet(f.bnc.value, f.bncs.value);
+   
+}
+
+
+function refresh(f) {
+
+   f.bn.value = bn.toString();
+   f.bns.value = bn.sign;
+
+   f.bna.value = bna.toString();
+   f.bnas.value = bna.sign;
+
+   f.bnb.value = bnb.toString();
+   f.bnbs.value = bnb.sign;
+
+   f.bnc.value = bnc.toString();
+   f.bncs.value = bnc.sign;
+}
+
+function bclear(f) {
+   f.bn.value = "00";
+   f.bns.value = 1;
+
+   f.bna.value = "00";
+   f.bnas.value = 1;
+
+   f.bnb.value = "00";
+   f.bnbs.value = 1;
+
+   f.bnc.value = "00";
+   f.bncs.value = 1;
+
+   setAll(f);
+}
+
+function sum(f) {
+   setAll(f);
+
+   bn = bna.sum(bna,bnb);
+
+   refresh(f);
+}
+
+function add(f) {
+   setAll(f);
+
+   bna.add(bnb);
+
+   refresh(f);
+}
+
+function subtract(f) {
+   setAll(f);
+
+   bn = bna.subtract(bna,bnb);
+
+   refresh(f);
+}
+
+
+function multiply(f) {
+   setAll(f);
+
+   bn = bna.multiply(bna,bnb);
+
+   refresh(f);
+}
+
+function multiplyRus(f) {
+   setAll(f);
+
+   bn = bna.multiplyRus(bna,bnb);
+
+   refresh(f);
+}
+
+function division(f) {
+   setAll(f);
+
+   bn = bna.division(bna,bnb);
+
+   refresh(f);
+}
+
+
+function multiplyBy2(f) {
+   setAll(f);
+
+   bna.multiplyBy2();
+
+   refresh(f);
+}
+
+function divideBy2(f) {
+   setAll(f);
+
+   bna.divideBy2();
+
+   refresh(f);
+}
+
+function increment(f) {
+   setAll(f);
+
+   bna.increment();
+
+   refresh(f);
+}
+
+function decrement(f) {
+   setAll(f);
+
+   bna.decrement();
+
+   refresh(f);
+}
+
+function mod(f) {
+   setAll(f);
+
+   bn = bna.mod(bnb);
+
+   refresh(f);
+}
+
+
+function modExp(f) {
+   setAll(f);
+
+   bn = bna.modExp(bnb,bnc);
+
+   refresh(f);
+}
+
+function gcd(f) {
+   setAll(f);
+
+   bn = bna.gcd(bnb);
+
+   refresh(f);
+}
+
+function sqrt(f) {
+   setAll(f);
+
+   bn = bna.sqrt();
+
+   refresh(f);
+}
+
+// -----------------------------
+function compare(f) {
+   setAll(f);
+
+   f.bnmsg.value = bna.absCompare(bnb);
+   
+   // refresh(f);
+}
+
+function bitArray(f) {
+   setAll(f);
+
+   f.bnmsg.value = bna.toBitArray();
+
+}
+
+function isOne(f) {
+   setAll(f);
+
+   f.bnmsg.value = bna.isOne();
+
+}
+
+
+function getRandom(f) {
+   setAll(f);
+
+   bn = rsaGetRandom(bna);
+
+   refresh(f);
+}
+
+
+function isPrime(f) {
+   setAll(f);
+
+   var s = str2hex(bnb.byteString);
+   var i = 10;
+
+   if(s.length > 0)
+      i = Number("0x" + s.substr(0,2));
+
+   if(rsaIsPrime(bna,i) == 1)
+      f.bnmsg.value = "A is propably prime";
+   else
+      f.bnmsg.value = "A is composite";
+
+
+   refresh(f);
+}
+
+function randomPrime(f) {
+   setAll(f);
+
+   var s = str2hex(bnb.byteString);
+   var i = 64;
+
+   if(s.length > 0)
+      i = Number("0x" + s.substr(0,2));
+      
+   bna = rsaRandomPrime(i);   
+
+   refresh(f);
+}
+</script>
+
+</head>
+
+<body>
+<h2>Bignum - JavaScript library for big integer calculations</h2>
+
+<p>(c) 2001 by <a href="http://jannetuukkanen.net/">Janne Tuukkanen</a></a>
+</p>
+<p>
+<a href="index.html">Back</a> to the main page.
+</p>
+<p>This is only for testing purposes. There is plenty of bugs and anomalies in the code.
+</p>
+<p>
+<b>All values are hexadecimal.</b>
+</p>
+
+<form name="f1">
+
+
+
+<!-- BIGNUM A -->
+Bignum A:<br>
+<input type="text" name="bna" size="50" value="7">
+<input type="hidden" size="2" name="bnas" value="1">
+<br>
+<!-- BIGNUM B -->
+Bignum B:<br>
+<input type="text" name="bnb" size="50" value="230">
+<input type="hidden" size="2" name="bnbs" value="1">
+<br>
+Bignum C:<br>
+<input type="text" name="bnc" size="50" value="231">
+<input type="hidden" size="2" name="bncs" value="1">
+<br>
+
+
+
+<!-- BIGNUM RESULT -->
+<hr>
+Result:<br><input type="text" name="bn" size="50">
+<input type="hidden" size="2" name="bns" value="1">
+<br>
+<hr>
+Message:<br><textarea rows="8" cols="50"  name="bnmsg" size="50"></textarea>
+<br>
+
+<!-- Operations -->
+<p>
+<input type="button" value="Set all" onclick="setAll(this.form);">
+<input type="button" value="Refresh" onclick="refresh(this.form);">
+<input type="button" value="Clear" onclick="bclear(this.form);">
+</p>
+
+<p>
+<input type="button" value="Sum" onclick="sum(this.form);">
+<input type="button" value="Add B to A" onclick="add(this.form);">
+<input type="button" value="Subtract" onclick="subtract(this.form);">
+<input type="button" value="Multiply" onclick="multiply(this.form);">
+<input type="button" value="Multiply (Rus)" onclick="multiplyRus(this.form);">
+<input type="button" value="Divide A by B" onclick="division(this.form);">
+<input type="button" value="Multiply by 2" onclick="multiplyBy2(this.form);">
+<input type="button" value="Divide by 2" onclick="divideBy2(this.form);">
+<input type="button" value="Increment" onclick="increment(this.form);">
+<input type="button" value="decrement" onclick="decrement(this.form);">
+<input type="button" value="MOD" onclick="mod(this.form);">
+<input type="button" value="A EXP B MOD C" onclick="modExp(this.form);">
+<input type="button" value="GCD" onclick="gcd(this.form);">
+<input type="button" value="SQRT" onclick="sqrt(this.form);">
+</p>
+<p>
+<input type="button" value="Compare" onclick="compare(this.form);">
+<input type="button" value="Bit Array" onclick="bitArray(this.form);">
+<input type="button" value="IsOne" onclick="isOne(this.form);">
+</p>
+<p>
+<input type="button" value="Random 0..A-1" onclick="getRandom(this.form);">
+<input type="button" value="Is A prime? (B iterations)" onclick="isPrime(this.form);">
+<input type="button" value="Random B byte prime" onclick="randomPrime(this.form);">
+
+</p>
+
+
+
+</form>
+
+<p>
+Javascript source:<br>
+
+<a href="jt_std.js">jt_std.js</a><br>
+<a href="jt_arc4.js">jt_arc4.js</a><br>
+<a href="jt_sha1.js">jt_sha1.js</a><br>
+<a href="jt_crc.js">jt_crc.js</a><br>
+<a href="jt_sss.js"> jt_sss.js</a><br>  
+<a href="jt_bignum.js">jt_bignum.js</a><br>
+<a href="jt_rsa_bogus.js">jt_rsa_bogus.js</a><br>
+
+</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,99 @@
+<html>
+<head>
+<title>Simple Script Security basic form</title>
+
+<script TYPE="text/javascript" SRC="jt_std.js" CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_arc4.js" CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_sha1.js" CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_crc.js" CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_sss.js" CHARSET="ISO-8859-1"></script>
+
+
+<script language="JavaScript">
+<!--
+// function runEncrypt(form)
+// takes data to be crypted from 'inText' field of the argument
+// adds HTML-parts to the ciphertext and writes the data
+// to the outText field of the argument
+// htmlHead and htmlFood are global variables declared
+// in  jt_sss.js file
+function runEncrypt(f) {
+    var cA = encryptToArray(f.inText.value, f.pass.value);
+    
+    var outStr = htmlHead + cA.printSrc("cArray") + htmlFoot;
+
+    f.outText.value = outStr;
+}
+// -->
+</script>
+</head> 
+<body bgcolor="#FFFFFF"> 
+<basefont size=-1>
+<h2>Simple Script Security (SSS) v0.82b<br>Basic form for secure WEB page creation</h2>
+
+<p>Copyright 2000 by <a href="http://jannetuukkanen.net/">Janne Tuukkanen</a></p>
+
+<p>
+<a href="index.html">Back</a></p>
+
+<p></p>
+
+<table>
+
+<tr>
+<td colspan="2">
+<font size=-1>
+<form name="cForm">
+Password:<br>
+<input type="text" name="pass"> There's no recovery for forgotten password!
+<br>
+</td>
+</tr>
+<tr>
+<td valign="top">
+Input:<br>
+<textarea rows="6" cols="50" name="inText"></textarea>
+<br>
+Output:<br>
+<textarea rows="6" cols="50" name="outText"></textarea>
+<br>
+<input type="button" name="cRun" value="process" onclick="runEncrypt(this.form);">
+</form>
+</font>
+</td>
+<td valign="top" bgcolor="#EEEEEE">
+<font size=-1>
+<p>
+<b>Usage:</b>
+<ol>
+<li>Paste HTML file to be encrypted to the <b>input</b> field (You could just type 'Hello, World!' for testing)</li>
+<li>Enter password to the <b>password</b> field</li>
+<li>Click <b>process</b> button</li>
+<li>Copy and paste all text from the <b>output</b> field to your
+HTML editor</li>
+<li>Save as normal HTML file</li>
+
+
+<li>
+<b>Note!</b> Following files needed in the same directory as the encrypted file. Use <b>Save Link As</b> method of your browser.<br>
+<a href="jt_std.js">jt_std.js</a>
+|
+<a href="jt_sha1.js">jt_sha1.js</a>
+|
+<a href="jt_arc4.js">jt_arc4.js</a>
+|
+<a href="jt_crc.js">jt_crc.js</a>
+|
+<a href="jt_sss.js">jt_sss.js</a>
+</li>
+</ol>
+   
+</font> 
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+
+

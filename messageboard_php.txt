@@ -1,0 +1,71 @@
+<html>
+<head>
+<title>SSS message board</title>
+<meta name="copyright" content="(c) 2000 by Janne Tuukkanen">
+<meta NAME="author" CONTENT="Janne Tuukkanen: jatu@projannet.port5.com">
+
+<script TYPE="text/javascript" SRC="jt_std.js" CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_arc4.js" CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_sha1.js" CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_crc.js" CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_sss.js" CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_msg.js" CHARSET="ISO-8859-1"></script>
+
+<script language="JavaScript">
+<!--
+var msgArray = new Array();
+<?php
+$msgfile = fopen("msgfile.txt","r");
+$i=0;
+while(!feof($msgfile)) {
+   $msg = chop(fgets($msgfile,16000));
+   if (strlen($msg) != 0) {
+   	echo "msgArray[".$i."]= '".$msg."';\n";
+   	$i = $i + 1;
+   }
+}
+fclose($msgfile);
+?>
+
+
+function runMessageDecrypt(f) {
+   printMessagesInSameWindow(msgArray, f.psw.value, f.showall.checked);
+}
+
+// -->
+</script>
+
+</head> 
+
+<body bgcolor="#FFFFFF"> 
+
+<h3><a href="http://projannet.port5.com">SSS</a> secured message board</h3>
+
+<p>(c) 2001 by Janne Tuukkanen <a href="mailto:jatu@projannet.port5.com">jatu@projannet.port5.com</a>
+</p>
+
+<p>
+Please enter password for reading messages.</p>
+
+<p>
+Click <a href="messagesend.html">here</a> to create new message.</p>
+
+<p><a href="index.html">Back</a> to main page.</p>
+
+<form name="cForm" onsubmit="return runMessageDecrypt(this);">
+Password:<br>
+<input type="password" name="psw">
+<input type="checkbox" name="showall">Show bad messages
+<br>
+<input type="submit" name="cRun" value="process">
+
+</form>
+
+</body>
+</html>
+
+
+
+
+
+

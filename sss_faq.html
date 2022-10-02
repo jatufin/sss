@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<Head>
+<title>Simple Script Security FAQ</title>
+
+<style type="text/css">
+body { font-family : sans-serif; color : black; background : white }
+h2,h3,h4 { background : #FFEECC }
+
+td { font-family : sans-serif ; font-size : 80% }
+
+th, td.hd { background: #EEEEEE  ; font-family : sans-serif ; font-size : 70% ; font-weight : bold ; text-align : left }
+
+</style>
+
+
+
+</head>
+
+<body>
+
+<h1>Simple Script Security - Frequenty Asked Questions</h1>
+
+<p>
+<i>(c) 2001 by Janne Tuukkanen</i>
+</p>
+
+<p>
+From here you can find an answer for most common questions I have received concerning the SSS package. If you have more questions, or want to make some corrections, please <a href="http://jannetuukkanen.net/">contact me.</a>
+</p>
+
+<p>
+<a href="index.html">Back to main page.</a>
+</p>
+
+<hr>
+
+<h3>Are you man or woman?</h3>
+<p>Man! For Christs sake... 'Janne' is very common male name in Finnish language. I don't know the ethymology of the name, but I guess it have some biblical roots.
+</p>
+
+<h3>What is Simple Script Security for?</h3>
+<p>
+It is purposed for encrypting and decrypting data with JavaScript. Most obvious usage is protecting web documents with password, but it can be used as crypto library in your own JavaScript applications.
+</p>
+
+<h3>How can I use it?</h3>
+<p>
+There is <a href="basic_crypt.html">basic form</a> for encrypt documents. You have to have some deep understanding of computer science to use the form: copying and pasting, using text editor and saving HTML files, saving files from links found in the page... Despite of these complex procedures you don't have to have made PhD thesis in CS to manage the task.
+</p>
+
+<h3>What are the *.js files?</h3>
+<p>
+Files with js extension are the actual program code of the SSS. You guess it: js comes from JavaScript. You have to place these files in the same directory where your HTML document uses SSS. When you have encrypted a page and saved the result as HTML file, you have to copy these *.js files in the same place the encrypted document is. And when you copy the encrypted file to your web server, you have to copy *.js files ass well. (FTP command <code>MPUT *.js</code> for instance)
+</p>
+<p>
+Single copy for each *.js file is enough. You can have so many encrypted documents in the same directory (with different passwords) as you wish.
+</p>
+
+<h3>Why haven't you done simple ZIP package or something, so people would just download an application and use it to encrypt pages?</h3>
+<p>
+When you go to <a href="basic_crypt.html">Basic Interface</a> page, the application is started. You only see it as web page on your monitor, but all the necessery functionality is loaded to your browser. Because of restrictations of JavaScript sand box, there is no file open or save dialogs, you have to do copy-pasting. But I can't understand what is so difficult in that. You can also save the <code>basic_crypt.html</code> to your local drive, so no network connection would be needed to use it.
+</p>
+
+
+
+<h3>Is this another stupid password protection scheme, where the password is stored in external JS file?</h3>
+<p>
+No, these files include only program code. Be free to examine them, this is not <i>security by obscurity</i>
+</p>
+
+
+<h3>Is SSS as safe as server side protection, i.e. .htaccess file?</h3>
+<p>
+In some manner SSS (as are all client side crypto solutions) dramatically more trustworthy than server side password protections. In these days there are plenty of ISPs, and the security of servers is not as bullet proof as someones think. In client side solutions only encrypted data is delivered over net, or stored to server.</p>
+<p>
+However, client side solutions doesn't work everywhere, and have some own drawbacks. When implemented with JavaScript there is even more drawbaks coming from the language concept itself.
+</p>
+
+<h3>Aren't public source code files a security issue?</h3>
+<p>
+No in the manner that attacker could retrieve any sensitive data (password or plaintext) from them. They are only program logics.
+</p>
+
+<h3>But how can I trust your SSS site from collecting secrets. After all in the <a href="basic_crypt.html">Basic Interface</a> page people are sending secrets to you via the form?
+</h3>
+<p>
+No, they are not! Also Basic Form works in client side, it is: in your browser, not in the server. You can save the Basic Interface to your hard disk, close the internet connection and use it as local application.
+</p>
+<p>
+Client side scripting is the whole idea of SSS.
+</p>
+
+<h3>The algorithm is ARC-4. Why haven't you mentioned the fact, that using stream cipher with same password for different plaintexts dramatically drops protection level?</h3>
+<p>
+The implementation uses salt for manage this. You can examine the <a href="sss_specs.html">specifications</a> for technical details.
+</p>
+
+<h3>Is the SSS encoder-decoder, or encrypter-decrypter, or what?</h3>
+<p>
+There is encoder-decoder functionality, because the standard escape() method of JS language doesn't work well in certain circumstances. So _yes_ if one wants, he can use the encoding functions found in jt_std.js file. They are simple but useful.
+</p>
+<p>
+En/decrypting is the main purpose of the pakkage. In the <a href="sss_specs.html">specifications</a> page there is description of the en/decryption scheme. ARC-4, SHA-1 and CRC32 algorithms are used.
+</p>
+
+<h3>How could I protect many pages with SSS, so that password would be asked only once?</h3>
+<p>
+You have to do a bit of programming. There is two practical methods: You could store the password in a cookie, or you could use frames or child windows. I prefer you to use frames. Remember, you can make 1 pixel sized frame, which consists all the JS code needed, secret pages are rendered in a big frame.
+</p>
+
+<h3>How could I manage multiple userID password pairs?</h3>
+<p>
+You could generate main key and encrypt it for each individual with his/her password. If you remove some user from the system, you have to generate new main key, because the one removed could have stored it. This doesn't affect for the passwords of other users.
+</p>
+
+<h3>Could I use SSS to safely send credit card numbers from client to server</h3>
+<p>
+Currently there is no server side functionality in SSS. And only symmetric cipher is used. So no, SSS is currently only for storing encrypted static data in server.
+<b>Correction 06-06-2001:</b> One could use Bignum library for sending public key encrypted messages. However I think there is much more sophisticated methods for handling e-commerce than JavaScript gludges...
+</p>
+
+<h3>SSS is not working with Internet Explorer 3, why?</h3>
+<p>
+Older JavaScript versions doesn't support external JS files. You could replace the link statements in encrypted files with whole code in the *.js files.
+</p>
+
+<h3>Pages with script code doesn't decrypt correctly, how could I solve this?</h3>
+<p>
+You could escape SCRIPT tags with backlash, this works with some browsers.
+</p>
+
+<h3>As concerning JavaScript as security hole, I have disabled it in my browser. How could I open encrypted documents without JS?</h3>
+<p>
+There is no SSS implementation other than one, and it is JavaScript based. So yo can't use it without JavaScript interpreter. If your operating system supports, you could create an user account with limited rights and enable use of JavaScript for that account.
+</p>
+
+<h3>Can I use SSS to protect e-mail messages?</h3>
+<p>
+Yes, but it is not an good idea. I don't prefer enabling JavaScript (or any other scripting language) in mail reader. Instead you should store the message to server, and only send the URL via e-mail. You can use also message board scripts as encrypted bulletin board.
+</p>
+
+<h3>Can I encrypt images with SSS?</h3>
+<p>
+Theoretically yes, practically no.
+</p>
+
+<h3>Could SSS be used for obfuscating or hiding my JavaScript source?</h3>
+<p>
+Yes and no. When code is executed it must be in plain text. If you make an JavaScript application where different modules are encrypted with different keys and some keys are stored in encrypted part of the code... It would make it extremely frustrating to solve such a puzzle. So you could use SSS for creating for instance hangman game, which would be difficult to cheat.
+</p>
+
+<h3>How could I create my own, password protected message board?</h3>
+<p>
+First you have to have your server to support PHP(4). Then you'll have to download following files to same directory on your server:</p>
+
+<p>JavaScript files:
+<ul>
+<li><a href="jt_std.js">jt_std.js</a></li>
+<li><a href="jt_sha1.js">jt_sha1.js</a></li>
+<li><a href="jt_arc4.js">jt_arc4.js</a></li>
+<li><a href="jt_crc.js">jt_crc.js</a></li>
+<li><a href="jt_sss.js">jt_sss.js</a></li>
+<li><a href="jt_msg.js">jt_msg.js</a></li>
+</ul>
+And save the html file:
+<ul>
+<li><a href="messagesend.html">messagesend.html</a></li>
+</ul>
+And PHP files:
+<ul>
+<li><a href="messageboard_php.txt">messageboard_php.txt</a></li>
+<li><a href="send_msg_php.txt">send_msg_php.txt</a></li>
+</li>
+</p>
+<p>
+These PHP files must be renamed with correct extensions. (.php, .php3,.shtml depending your server).</p>
+
+
+</body>
+</html>

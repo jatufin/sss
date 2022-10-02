@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Simple Script Security</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<meta name="keywords" content="JavaScript, SSS, security, cryptology, password, client">
+<meta name="abstract" content="Obtaining real security with client side scripting">
+<meta name="description" content="JavaScript functions and online pages which allow encryption and decryption of web pages by simply using browser side scripting">
+<meta name="copyright" content="(c) 2000-2007 by Janne Tuukkanen">
+<meta NAME="author" CONTENT="Janne Tuukkanen">
+        
+
+<style type="text/css">
+body { font-family : sans-serif; color : black; background : white }
+h2,h3 { background : #FFEECC }
+
+
+td { font-family : sans-serif ; font-size : 80% }
+
+th, td.hd, p.imgtxt { background: #EEEEEE  ; font-family : sans-serif ; font-size : 70% ; font-weight : bold ; text-align : left }
+
+div.box { border-width : 1 ; width : 80% }
+</style>
+
+
+</head> 
+
+<body>
+
+
+<!-- GOOGLE ADS START HERE -->
+<div align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-1298094294941207";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_type = "text";
+google_ad_channel = "";
+google_ui_features = "rc:0";
+//-->
+</script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+<!-- GOOGLE ADS END HERE -->
+
+
+
+<h1>Simple Script Security (SSS) v0.85beta</h1>
+
+
+<p>Copyright 2000-2007 by <b><a href="http://jannetuukkanen.net/">Janne Tuukkanen</a></b></p>
+
+<h4>SSS is cryptographical package, which includes all the functions for encrypting and encoding web documents on client side and save as ordinary HTML files on WWW server. Decrypting is done also in client side, so no secret information is delivered over network, or stored on server. Current version implements a symmetric cipher, secure hash algorithm and routines for easily use them in your own applications, or strongly encrypt your web pages.</h4>
+
+<h4>Because use of JavaScript SSS offers good platform independent solution for delivering encrypted messages over the net. Encrypted data can be decrypted by any web browser with JavaScript enabled.</h4>
+
+
+<div class="box">
+<p>
+Want to secure your pages right a way? Go <a href="basic_crypt.html">here</a></p>
+
+<p>
+Encrypted <a href="ssstest.html">test page</a>, password is <b>'salasana'</b></p>
+
+<h2>
+I wrote a little <a href="sss_faq.html">FAQ</a> about SSS.
+</h2>
+
+<p>
+And started to make <a href="sss_specs.html">specs</a> (as usually, documentation comes last)</p>
+
+<p>Made <a href="bignum_test.html">Bignum</a> library for big integer calculations. Slow and no documentations. But it does c exp e mod n  ;)</p>
+
+</div>
+
+<p><font color="#ff8888"><b>
+There is problems with Mac versions of Internet Explorer and iCab. I'll make a fix ASAP, but before that <u>do not encrypt pages using Mac IE or iCab</u>. Netscape 4.61 for Mac seems to work right, other NN versions are not tested.
+</b></font></p>
+
+
+<p>
+JavaScript and good security in same sentence is often considered as oxymoron. I made this little utility and script library to those, who want to make password protected web pages and only use client side JavaScript capablities of www browsers. Also I felt bored to the very frequently asked question in newsgroups: <i>Can I make secure web pages using JavaScript?</i> and the common answer: <i>No, you have to go server side.</i></p>
+
+<p>
+Basic fact is, that it is not true. In fact most server side solutions for data security are almost as tweak as file name obscurity used in some password schemes implemented with client side script languages.</p>
+
+<p>
+One can immediately see at least one of these flaws in most applications:</p>
+<ul>
+<li>Data stored to server in plaintext</li>
+<li>Decryption key sent in plaintext over network</li>
+<li>Data sent in plaintext over network</li>
+<li>Server adminstrators capable of messign with plaintext data</li>
+</ul>
+
+<p>Of course there's sophisticated methods to aquire real security in web based applications, but for instance making SSL connection can be out of reach for ordinary web page project and average citizen. There's also ISP's which doesn't allow the use of even simple server side scripts or modifying setup files of the HTTP server (e.g. .htaccess). If one decides to use client side services, she'll notice that there's still huge problems with platform dependent applications. There's small set of good ones, which run on almost every OSes, but they're not widely spread to the common web users.</p>
+
+<h3>Security with scripts</h3>
+<p>
+These little pieces of code are written mostly for fun, and to implement some functionality I haven't found in common JavaScript library web sites. Most of developers using the language seems to concentrate to do <i>k3w1</i> things with visual appearance of web pages, and <i>Real Programmers</i> consider JS as another boring scripting system and security flaw, which is in their mind only those few seconds it takes to turn the feature off from their browser (after that they go to code just another time sharing operating system in 68k asm, or whatever <i>Real Coders</i> do when they're out of their coffins.)</p>
+
+<p>
+Ok, here's the idea. In following .js files are implemented some very simple encryption tools:</p>
+
+<ul>
+<li><a href="jt_std.js">jt_std.js</a> general helper functions and objects</li>
+<li><a href="jt_sha1.js">jt_sha1.js</a> SHA-1 hash generation (no padding)</li>
+<li><a href="jt_arc4.js">jt_arc4.js</a> ARCFOUR stream cipher</li>
+<li><a href="jt_crc.js">jt_crc.js</a> CRC32 check sum counter</li>
+<li><a href="jt_sss.js">jt_sss.js</a> Simple Script Security functions</li>
+<li><a href="jt_msg.js">jt_msg.js</a> Functions for creating encrypted message board</li>
+</ul>
+
+<p>
+Using these functions in <a href="basic_crypt.html">Basic interface</a> page one can easily encrypt whatever text she wants. The utility produces HTML code containing the encrypted data, password field for decrypt key and reference to the decrypting JS code. This can be copy-and-pasted to text editor and placed to web server as ordinary HTML file (the preceeding .js files must be uploaded to the same directory.)</p>
+
+<h3>Why to use</h3>
+<p>
+Implementing some kind of crypto package to such a slow environment as client side browser scripting is, may sound unefficient (programmers tend to count their cipher speeds in MBytes per sec, implemented in highly optimized C or asm code.) But in most cases the amounts of data are small, kilobytes, and the delay for decrypting will be acceptable in the World Wide Wait. By using JavaScript one achieves important features: no plug-ins or separate programs needed, usable in some 90 percent of todays browsers and extremely simple user interface, not to mention the easily understandable principle of symmetric encryption (PGP, for instance, is great product, but still not in use by most surfers.)</p>
+
+<p>
+Also there's much more use for off-line on-the-fly en/decryption tools than just web page security. SSS can be used with conjuction of databases and user dependent data, hiding script code for instance in browser based games and of course in e commerce. Most important is, that in my opinion every one has right to privacy, and this is one solution among others to gain it more easily.</p>
+
+<h3>How it works</h3>
+<p>
+SSS uses symmetrical encryption scheme, implementing ARCFOUR stream cipher, two byte salt is generated and added to the password from which the actual encryption key is generated using SHA-1 hash algorithm. Data integrity is checked counting CRC32 value for plaintext and encrypting that in ciphertext message. Representation of ciphertext is hexadecimal dump. That is for each 8 bit bytes there's two characters [0-9|A-F] containing the value of the byte.
+</p>
+
+<p>
+As the encryption/decryption is fully completed in client side, there's no sensitive information sent over the unsecure network (the password must be delivered some way; snail mail, phone, told during lunch break.) Alltough there's some fancy attacks against the system, the base principle is, IMHO rather good.</p>
+
+<p>There's two functions in the <code>jt_sss.js</code> file, which are most cases enough for average developer:
+<ul>
+<li><code>encrypt(plaintex,password)</code></li>
+<li><code>decrypt(ciphertext,password)</code></li>
+</ul>
+I hope the names are self explanatory. Besides these there's other functions in the package, which could be useful for more complex solutions:
+<ul>
+<li><code>sha1(string)</code> -- Generates 160 bit hash from at most 56 char long string</li>
+<li><code>arc4(instring,password)</code> -- Does ARCFOUR streaming XOR to the <code>instring</code>, based on <code>password</code></li>
+<li><code>crc32(string)</code> -- Counts 32 bit checksum from <code>string</code></li>
+<li><code>str2hex(string)</code> -- Converts <code>string</code> to hexadecimal notation</li>
+<li><code>hex2str(string)</code> -- Converts hexadecimal values to characters</li>
+<li><code>dWordInBytes(number)</code> -- Wrapper to handle 32 bit dwords in four 8 bit bytes</li>
+</ul>
+For complete information and other functions check the source code files.
+</p>
+
+<h3>Attacks</h3>
+
+<p>
+The most obivious attack would be one where the server containing data is compromised. Altough the ciphertext is unreadable, the enemy could easily write his versions from the scripts, causing them act like'trojans'. On the other hand the sandbox where scripts run is even narrower than the one for Java programs. If the net connection is closed and cookies disabled, I can't see easy way to deliver sensitive information from client back to the net. Of course files cached to local hard disk by browser or OS are problem, but that's so with almost all systems and should be routinely reacted.</p>
+
+<p><b>
+If there's flaws in design, I'm propably not aware of them. So I would highly appropriate if one finding some would kindly inform <a href="http://jannetuukkanen.net/">me</a> as soon as possible.
+</b></p>
+
+<p>
+The SSS is in very early beta phase, so these pages are also little clumsy. Maybe I'll add some bells and whistles, as it is excepted from pages containing JavaScript information. The only user interface today is the <a href="basic_crypt.html">Basic interface</a>. I have plenty of features in my mind to be added, also I'll create a few applications and write deeper information to the pages in future (near or far, who knows...) Before that you can only cope with above .js files and comment lines they contain. Sadly the code is rather ugly and should be rewritten some rainy day I have no other things to do.</p>
+
+<h3>Legal blah blah</h3>
+<p>
+I don't recommend to use SSS in production purposes before some testing and propably bug fixes are done. I have put copyright notices to the files, but idea is that these codes should be freely usable by anyone for any non illegal purposes. It would be nice, if someone could point me an useful licence and disclaimer template. In any cases it should be clear, that I don't give any warranties or promises concerning these pieces of code. If you use it, you suffer it and all you can blame is yourself. The legal status of ARCFOUR algorithm is not all so clear for me, so at least U.S. citizens should be aware (ARCFOUR is interoperable with proprietary algorithm RC-4, which is trademark of RSA Data Security, Inc.)</p>
+
+<ul>
+<li><a href="basic_crypt.html">Basic interface</a>
+<li>Encrypted <a href="ssstest.html">test page</a>, password is <b>'salasana'</b>
+</ul>
+
+<hr>
+<h3>Notes</h3>
+
+
+<ul>
+<li><b>10-16-2007</b> Long time no see. Hao jiu bu jian. Found this stuff from old backups. I removed nonfunctional guestbook and ancient email adresses and put files back on air. Oh, and replaced Free Speech banner with Google ads. Call that symbolic...</li>
+<li><b>06-21-2001</b> Moved decryption event handler to onSubmit. Little modification which allows enter key to start decryption and prevents password appearing to browsers url box.</li>
+<li><b>06-06-2001</b> Made Bignum lib and some RSA functions. Too slow for decryption or key generation. But does encrypting in reasonable time with small e's.</li>
+<li><b>05-31-2001</b> Weird bug which caused my ole IE 4.0 crash fixed. Were the bug in IE or my code? I have my opinion...</li>
+<li><b>05-28-2001</b> Made messageboard (<code>jt_std.js</code> and bit of PHP)plus minor improvments to old files. Increased version number a bit.
+<li><b>05-23-2001</b> Wrote FAQ and started to make better documentation. Then I rested.</li>
+<li><b>05-01-2001</b> Six months these pages have rested in peace, no modifications. I had almost forgotten the whole little project, but suddenly got some very positive e-mail, and also noticed from server statistics that there have been small but groving flow of visitors on these months. Major weaknesses have not been reported, so I haven't modified the code, only little parts of this <code>index.html</code> file. (maybe you notced the Blue Ribbon banner on top of the page) The code <i>needs</i> to be rewritten, like those of you know who have written short stories or novels or whatever, that some text needs to be written almost from scratch once more. But it would be nice to add some public key thingies, and maybe steganography ("Stega and JavaScript?" one may ask, but I have some ideas...) and develop some interesting applications others than simply HTML page protecting. And of course SSS should work in WAP terminals...</li>
+<li><b>11-06-2000</b> For some reason I want to add these useless bits of toughs here. No one is forced to read them however. Above the en/decryption scheme is described briefly, some people propably want to get more formalized and accurate information. In my mind the base idea of using client side scripting to ensure security is the most interesting part, and actual implementation and code is only the necessary real world part of it. Here's how things go today, after some experience code will be optimized and lot of unnecessary, time consuming parts (which actually doesn't increase security) removed. Pseudo code is not by any standards.
+
+<ol>
+<li><code>ARCFOUR(DATA,KEY) --> DATA'</code> Does bitwise XOR between <code>DATA</code> and PRNG based on <code>KEY</code>. Encryption is same as decryption, i.e. <code>ARCFOUR(DATA',KEY) --> DATA</code></li>
+<li><code>SHA1(DATA) --> 160 BIT DATA'</code> produces cryptologically strong (one way) hash value from <code>DATA</code></li>
+<li><code>CRC(DATA) --> 32 BIT DATA'</code> produces cryptologically tweak check sum from <code>DATA</code></li>
+<li><code>SALT() --> SHA1(PRNG(SYSTEM_TIME)) --> 16 BIT DATA</code> produces two bytes considered random</li>
+<li><code>CAT(D1,D2, ... , DN) --> DATA</code> Concatenates given byte streams to one</code></li> 
+<li><code>ENCRYPT(DATA,PASSWORD) --> SLT := SALT(); CAT(SLT,ARCFOUR(CAT(CRC(DATA),DATA),SHA1(CAT(PASSWORD, SLT))))</code></li>
+<li><code>DECRYPT(DATA,PASSWORD) --> SLT := DATA[0..1]; TEMP := ARCFOUR(DATA[2..N-1], SHA1(CAT(PASSWORD, SLT))); IF CRC(TEMP[6..N-1]) == TEMP[3..5] --> TEMP[6..N-1]</code></li>
+<li><code>ENCRYPT_ARRAY(DATA[0..N-1], PASSWORD) --> PASSWORD[M] := SHA1(PASSWORD[M-1]), PASSWORD[-1] := PASSWORD, M := [0..N-1]; DATA'[M] := ENCRYPT(DATA[M],PASSWORD[M])</code></li>
+<li><code>DECRYPT_ARRAY(DATA[0..N-1], PASSWORD) --> PASSWORD[M] := SHA1(PASSWORD[M-1]), PASSWORD[-1] := PASSWORD, M := [0..N-1]; DATA'[M] := DECRYPT(DATA[M],PASSWORD[M])</code></li>
+</ol>
+Hope it went right, actual code might be more understandable. And on the above there is not mentioned that several conversions between byte strings and hex representation are involved.
+</li>
+<li><b>11-06-2000</b> Information was given to me, that stream cipher called ARCFOUR is not patented, and use of its implementation is legal. It's not allowed to be called RC-4(tm)
+<li><b>11-06-2000</b> And of course there was cute little bug slipped in. Fixed.</li>
+<li><b>11-06-2000</b> Realized that the way long string slicing was done deployed significant security flaw. Fixed that with sorta straightforward way; for each block the key is generated by hashing previus block's key (and that is also hashed with salt) Umh, little bit stupid maybe, but this fix needed only two short lines of code and at 3:50am didn't bother more.</li>
+<li><b>11-05-2000</b> Modified SSS to slice long strings to 4096 character long blocks, thus achiewing major speed increasy. However browser dependent restrictions in string lengths of Textareas are still there in Basic User Interface. Blocks are encrypted independently with same password/phrase, but different salt, this might be a security flaw of some degree.</li>
+<li><b>11-04-2000</b> Noted that string handling is not so efficient, causing some O(N^2) executing time. That'll be fixed, but maybe tomorrow, to night I'll get beer or ten.</li>
+</ul>
+
+<hr>
+<h2>Links</h2>
+
+<p>Here is some links, more or less randomly chosen.
+</p>
+
+<ul>
+<li><a href="http://www.achtung.com/crypto/rc4.html">Stream Cipher RC-4 / ARC-4</a></li>
+<li><a href="http://developer.irt.org/script/script.htm">irt.org - JavaScript FAW Knowledge Base</a></li>
+<li><A HREF="http://www.scriptsearch.com">ScriptSearch.com</A></li>
+<li><a href="http://home.earthlink.net/~oxherder/">The Way of JavaScript</a></li>
+<li><a href="http://www.wsabstract.com/">Website Abstraction</a></li>
+<li><a href="http://www.wotsit.org/">File Format Collection</a></li>
+<li><a href="http://www-groups.dcs.st-and.ac.uk/~history/index.html">History of Mathematics</a></li>
+<li><a href="http://www.eff.org/">the Electronic Frontier Foundation</a></li>
+<li><a href="http://www.gnu.org/fsf/fsf.html">Free Software Foundation</a></li>
+<li><a href="http://www.garykessler.net/library/crypto.html">An overview of Cryptography</a></li>
+
+</ul>
+
+<center>
+
+</center>
+
+</body>
+</html>
+

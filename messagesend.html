@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>SSS Message send dialog</title>
+<html>
+<head>
+<title>Simple Script Security message sending</title>
+
+<script TYPE="text/javascript" SRC="jt_std.js" CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_arc4.js" CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_sha1.js" CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_crc.js" CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_sss.js" CHARSET="ISO-8859-1"></script>
+<script TYPE="text/javascript" SRC="jt_msg.js" CHARSET="ISO-8859-1"></script>
+
+</head>
+
+<body bgclor="#ffffff">
+
+<h3>Send encrypted message</h3>
+
+<form name="msgf" onsubmit="return sendNewMessage(this);">
+
+<!-- this field contains server side page which handles new messages -->
+<input type="hidden" name="cgiUrl" value="send_msg.php">
+
+<!-- Remove default value for your own use -->
+Password (default value set for guest book):<br>
+<input type="text" value="salaisuus" name="psw">
+<br>
+From:<br>
+<input type="text" value="nobody" name="from">
+<br>
+Subject:<br>
+<input type="text" value="greetings" name="subject">
+<br>
+<textarea rows="15" cols="80" name="msg"></textarea>
+<br>
+<input type="submit" value="Send">
+</form>
+
+</body>
+</html>
